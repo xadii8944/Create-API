@@ -94,3 +94,5 @@ def add_cors_headers(response):
 if __name__ == '__main__':
     key = generate_key()
     app.run()
+#nachujmito jak nie dziala
+#szajs

@@ -1,0 +1,1 @@
+#tokurwa nie działa
