@@ -1,0 +1,4 @@
+/encrypted_files
+/decrypted_files
+key.txt
+filename.json
