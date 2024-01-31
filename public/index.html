@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API ktore moze cos zaszyfruje?</title>
+</head>
+<body>
+
+  <h1>Szyfrowanie zdjecia</h1>
+  <input type="file" id="fileInput">
+  <button onclick="uploadFile()">Szyfruj!</button>
+  <p id="uploadStatus"></p>
+
+  <hr>
+
+  <h1>Odszyfrowanie zdjecia</h1>
+  <input type="text" id="fileCode" placeholder="Nazwa_pliku.rozszerzenie">
+  <button onclick="downloadFile()">Spróbuj odszyfrowac</button>
+
+  <script>
+     function uploadFile() {
+      var fileInput = document.getElementById('fileInput');
+      var file = fileInput.files[0];
+
+      var formData = new FormData();
+      formData.append('file', file);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://127.0.0.1:5000/upload', true); // Zastąp 'adres_serwera' odpowiednim adresem API
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          console.log('Sukces');
+          document.getElementById('uploadStatus').textContent = xhr.responseText; // Aktualizacja komunikatu
+        } else {
+          console.error('Nie sukces.');
+          document.getElementById('uploadStatus').textContent = 'Nie sukces'; // Aktualizacja komunikatu
+        }
+      };
+
+      xhr.send(formData);
+    }
+    function downloadFile() {
+      var fileCodeInput = document.getElementById('fileCode');
+      var fileCode = fileCodeInput.value;
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'http://127.0.0.1:5000/download/' + fileCode, true); // Zastąp 'adres_serwera' odpowiednim adresem API
+      xhr.responseType = 'blob';
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          var downloadLink = document.createElement('a');
+          var blob = xhr.response;
+          var url = window.URL.createObjectURL(blob);
+          downloadLink.href = url;
+          downloadLink.download = 'downloaded_file.txt';
+          downloadLink.click();
+          window.URL.revokeObjectURL(url);
+          console.log('Sukces');
+        } else {
+          console.error('Nie sukces');
+        }
+      };
+
+      xhr.send();
+    }
+  </script>
+</body>
+</html>
